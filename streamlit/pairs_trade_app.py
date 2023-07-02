@@ -69,5 +69,5 @@ st.text('Long win count: ' + str(long_win_count))
 st.text('Short enter count: ' + str(short_enter_count))
 st.text('Short win count: ' + str(short_win_count))
 st.text(f'Win rate: {win_rate:.2%}')
-
 st.pyplot(plot_backtest(pairs.df))
+st.table(pairs.df_txn)

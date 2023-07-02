@@ -153,11 +153,11 @@ class Backtest:
                     stock1_cost = stock1_price
                     stock2_cost = stock2_price
                     #calculate number of shares, use all capital to buy stock1 and stock2 using beta, assuming that short selling is allowed and have to put up margin = 100%
-                    #capital = n * stock1_price + m * stock2_price and m = n * beta
-                    #capital = n * stock1_price + n * beta * stock2_price
-                    #capital = n * (stock1_price + beta * stock2_price)
-                    n = capital / (stock1_price + beta * stock2_price)
-                    m = n * beta
+                    # stock1_price = beta * stock2_price >> OLS
+                    # capital = n * stock1_price + m * stock2_price 
+                    # capital = n * beta * stock2_price + n * stock2_price
+                    n = capital / stock2_price / (1 + beta)
+                    m = (capital - n * stock1_price) / stock2_price
                     self.df.loc[i, self.stock1+'_position'] = n
                     self.df.loc[i, self.stock2+'_position'] = -m
                     self.df.loc[i, 'capital'] = n*stock1_price + m*stock2_price
@@ -175,8 +175,8 @@ class Backtest:
                     entry_spread = self.df['spread'][i]
                     stock1_cost = stock1_price
                     stock2_cost = stock2_price
-                    m = capital / (stock1_price * beta + stock2_price)
-                    n = m * beta
+                    n = capital / stock2_price / (1 + beta)
+                    m = (capital - n * stock1_price) / stock2_price
                     self.df.loc[i, self.stock1+'_position'] = -n
                     self.df.loc[i, self.stock2+'_position'] = m
                     self.df.loc[i, 'capital'] = n*stock1_price + m*stock2_price
