@@ -60,7 +60,6 @@ def plot_coint(df, stock1, stock2, TRADING_PERIOD=None, SD_MULTIPLIER=1):
     sell = df_price_pair[df_price_pair['zscore'] > SD_MULTIPLIER]
     ax2.scatter(buy['date'], buy['spread'], color='green', marker='^', label='buy')
     ax2.scatter(sell['date'], sell['spread'], color='red', marker='v', label='sell')
-    plt.show()
     return fig
 
 def plot_backtest(df_plot):

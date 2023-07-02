@@ -57,4 +57,17 @@ TRADING_PERIOD = 200
 INITIAL_CAPITAL = 100
 pairs = Backtest(df_price, stock1, stock2, ENTRY_SD, EXIT_SD, CUTLOSS_SD, TRADING_PERIOD, INITIAL_CAPITAL)
 pairs.gen_signal()
+capital = pairs.df['capital'].values[-1]
+long_enter_count = len(pairs.df_txn[pairs.df_txn['position_type'] == 'long'])
+long_win_count = len(pairs.df[pairs.df['is_just_exit_long'] == 1])
+short_enter_count = len(pairs.df_txn[pairs.df_txn['position_type'] == 'short'])
+short_win_count = len(pairs.df[pairs.df['is_just_exit_short'] == 1])
+win_rate = (long_win_count + short_win_count) / (long_enter_count + short_enter_count)
+st.text(f'Capital: {capital:.2f}')
+st.text('Long enter count: ' + str(long_enter_count))
+st.text('Long win count: ' + str(long_win_count))
+st.text('Short enter count: ' + str(short_enter_count))
+st.text('Short win count: ' + str(short_win_count))
+st.text(f'Win rate: {win_rate:.2%}')
+
 st.pyplot(plot_backtest(pairs.df))
